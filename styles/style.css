@@ -79,45 +79,38 @@ html {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* CORRECTION : Ne masquer que le menu hamburger Streamlit, pas le bouton sidebar */
-#MainMenu, footer, .stDeployButton {
+/* CORRECTION : Masquer seulement certains éléments, PAS le header complet */
+#MainMenu {
     visibility: hidden !important;
     display: none !important;
 }
 
-/* GARDER LE HEADER ET LE BOUTON SIDEBAR VISIBLES */
-header, 
+footer {
+    visibility: hidden !important;
+    display: none !important;
+}
+
+.stDeployButton {
+    visibility: hidden !important;
+    display: none !important;
+}
+
+/* GARDER LE HEADER VISIBLE pour le bouton sidebar */
+/* header {
+    visibility: hidden !important;
+    display: none !important;
+} */
+
+/* S'assurer que le bouton sidebar reste visible */
 button[kind="header"],
+button[data-testid="baseButton-header"],
 button[aria-label*="sidebar"],
-[data-testid="stHeader"],
-.css-18ni7ap {
+[data-testid="stHeader"] button,
+.css-vk3wp9,
+.css-1kyxreq {
     visibility: visible !important;
-    display: block !important;
+    display: flex !important;
     opacity: 1 !important;
-}
-
-/* Améliorer le style du bouton sidebar */
-button[kind="header"],
-button[aria-label*="sidebar"] {
-    background: var(--gradient-primary) !important;
-    color: white !important;
-    border: 2px solid white !important;
-    border-radius: 50% !important;
-    width: 3rem !important;
-    height: 3rem !important;
-    box-shadow: var(--shadow-xl) !important;
-    transition: var(--transition) !important;
-    position: fixed !important;
-    top: 1rem !important;
-    left: 1rem !important;
-    z-index: 999999 !important;
-}
-
-button[kind="header"]:hover,
-button[aria-label*="sidebar"]:hover {
-    background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-800) 100%) !important;
-    transform: scale(1.1) !important;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* App container */
@@ -648,15 +641,6 @@ section[data-testid="stSidebar"] .stButton > button:hover::before {
         font-size: var(--text-xs) !important;
     }
     
-    /* Bouton sidebar mobile plus gros */
-    button[kind="header"],
-    button[aria-label*="sidebar"] {
-        width: 3.5rem !important;
-        height: 3.5rem !important;
-        top: 0.5rem !important;
-        left: 0.5rem !important;
-    }
-    
     .stDataFrame table {
         min-width: 600px;
     }
@@ -689,15 +673,6 @@ section[data-testid="stSidebar"] .stButton > button:hover::before {
         padding: 0.5rem !important;
         font-size: 0.7rem !important;
         text-align: center !important;
-    }
-    
-    /* Bouton sidebar très petit écran */
-    button[kind="header"],
-    button[aria-label*="sidebar"] {
-        width: 4rem !important;
-        height: 4rem !important;
-        top: 0.5rem !important;
-        left: 0.5rem !important;
     }
     
     .stDataFrame thead th,
