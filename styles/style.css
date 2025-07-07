@@ -1,12 +1,12 @@
 /* ========================================
-   SOFITEL TRAINING HUB - STYLES OPTIMISÉS
-   Design System Sofitel Gold & Navy
+   SOFITEL TRAINING HUB - STYLES COMPLETS
+   Design System avec Navigation par Boutons
    ======================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    /* PALETTE SOFITEL OPTIMISÉE POUR LISIBILITÉ */
+    /* PALETTE SOFITEL */
     --primary-50: #fefce8;
     --primary-100: #fef3c7;
     --primary-500: #b8860b;
@@ -34,19 +34,18 @@
     --red-500: #ef4444;
     --red-100: #fee2e2;
     
-    /* BACKGROUND OPTIMISÉ - Plus subtil et lisible */
+    /* Gradients */
     --gradient-primary: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
     --gradient-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 30%, #fef3c7 100%);
     --gradient-success: linear-gradient(135deg, var(--emerald-500) 0%, #059669 100%);
-    --gradient-glass: rgba(255, 255, 255, 0.95);
     
-    /* Ombres optimisées */
+    /* Ombres */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     
-    /* Radius et spacing */
+    /* Spacing */
     --radius: 0.75rem;
     --radius-lg: 1rem;
     --radius-xl: 1.5rem;
@@ -80,13 +79,48 @@ html {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Masquer éléments Streamlit */
-#MainMenu, footer, header, .stDeployButton {
+/* CORRECTION : Ne masquer que le menu hamburger Streamlit, pas le bouton sidebar */
+#MainMenu, footer, .stDeployButton {
     visibility: hidden !important;
     display: none !important;
 }
 
-/* App container avec background clair et lisible */
+/* GARDER LE HEADER ET LE BOUTON SIDEBAR VISIBLES */
+header, 
+button[kind="header"],
+button[aria-label*="sidebar"],
+[data-testid="stHeader"],
+.css-18ni7ap {
+    visibility: visible !important;
+    display: block !important;
+    opacity: 1 !important;
+}
+
+/* Améliorer le style du bouton sidebar */
+button[kind="header"],
+button[aria-label*="sidebar"] {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-radius: 50% !important;
+    width: 3rem !important;
+    height: 3rem !important;
+    box-shadow: var(--shadow-xl) !important;
+    transition: var(--transition) !important;
+    position: fixed !important;
+    top: 1rem !important;
+    left: 1rem !important;
+    z-index: 999999 !important;
+}
+
+button[kind="header"]:hover,
+button[aria-label*="sidebar"]:hover {
+    background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-800) 100%) !important;
+    transform: scale(1.1) !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* App container */
 .stApp {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--gradient-bg);
@@ -95,25 +129,91 @@ html {
     overflow-x: hidden;
 }
 
-/* Container principal responsif */
+/* Container principal */
 .main .block-container {
     padding: var(--space-6) var(--space-4);
     max-width: 100vw !important;
     overflow-x: hidden;
 }
 
-/* Sidebar avec fond blanc pour contraste */
-.css-1d391kg {
-    background: rgba(255, 255, 255, 0.98);
+/* SIDEBAR OPTIMISÉE POUR BOUTONS */
+.css-1d391kg, 
+section[data-testid="stSidebar"] > div,
+.css-1aumxhk {
+    background: rgba(255, 255, 255, 0.98) !important;
     backdrop-filter: blur(20px);
-    border-right: 2px solid var(--primary-600);
+    border-right: 3px solid var(--primary-600);
     box-shadow: var(--shadow-xl);
     width: 280px !important;
-    min-width: 280px;
+    min-width: 280px !important;
+    transition: var(--transition);
+    padding: var(--space-4) !important;
+}
+
+/* Style spécial pour les boutons de navigation */
+section[data-testid="stSidebar"] .stButton > button {
+    width: 100% !important;
+    margin: 0.25rem 0 !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: var(--radius) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: var(--text-sm) !important;
+    font-weight: 500 !important;
+    transition: var(--transition) !important;
+    border: 2px solid transparent !important;
+    text-align: left !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+/* Boutons secondaires (non sélectionnés) */
+section[data-testid="stSidebar"] .stButton > button[kind="secondary"] {
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: var(--slate-700) !important;
+    border-color: var(--slate-200) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+section[data-testid="stSidebar"] .stButton > button[kind="secondary"]:hover {
+    background: var(--slate-100) !important;
+    color: var(--slate-800) !important;
+    border-color: var(--primary-600) !important;
+    transform: translateX(4px) !important;
+    box-shadow: var(--shadow) !important;
+}
+
+/* Boutons primaires (sélectionnés) */
+section[data-testid="stSidebar"] .stButton > button[kind="primary"] {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+    border-color: var(--primary-700) !important;
+    font-weight: 600 !important;
+    box-shadow: var(--shadow-lg) !important;
+    transform: translateX(4px) !important;
+}
+
+section[data-testid="stSidebar"] .stButton > button[kind="primary"]:hover {
+    background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-800) 100%) !important;
+    box-shadow: var(--shadow-xl) !important;
+}
+
+/* Effet de brillance sur les boutons */
+section[data-testid="stSidebar"] .stButton > button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
     transition: var(--transition);
 }
 
-/* Cards avec fond blanc pur pour lisibilité */
+section[data-testid="stSidebar"] .stButton > button:hover::before {
+    left: 100%;
+}
+
+/* Cards modernes */
 .modern-card {
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(20px);
@@ -144,7 +244,7 @@ html {
     border-color: var(--primary-600);
 }
 
-/* Headers de section avec fond blanc */
+/* Headers de section */
 .section-header {
     background: rgba(255, 255, 255, 0.98);
     border-radius: var(--radius-lg);
@@ -166,7 +266,7 @@ html {
     flex-wrap: wrap;
 }
 
-/* Boutons avec style doré Sofitel */
+/* Boutons standards */
 .stButton > button {
     background: var(--gradient-primary);
     color: white;
@@ -183,28 +283,13 @@ html {
     overflow: hidden;
 }
 
-.stButton > button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: var(--transition);
-}
-
 .stButton > button:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-xl);
     background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-800) 100%);
 }
 
-.stButton > button:hover::before {
-    left: 100%;
-}
-
-/* Formulaires avec focus doré */
+/* Formulaires */
 .stTextInput > div > div > input,
 .stSelectbox > div > div > select,
 .stTextArea > div > div > textarea,
@@ -233,7 +318,7 @@ html {
     background: var(--primary-50);
 }
 
-/* Labels avec meilleur contraste */
+/* Labels */
 .stTextInput > label,
 .stSelectbox > label,
 .stTextArea > label,
@@ -245,14 +330,7 @@ html {
     font-family: 'Inter', sans-serif !important;
 }
 
-/* Placeholders */
-.stTextInput > div > div > input::placeholder,
-.stTextArea > div > div > textarea::placeholder {
-    color: var(--slate-500);
-    font-style: italic;
-}
-
-/* Onglets avec fond blanc */
+/* Onglets */
 .stTabs [data-baseweb="tab-list"] {
     background: rgba(255, 255, 255, 0.98);
     border-radius: var(--radius-lg);
@@ -289,7 +367,7 @@ html {
     font-weight: 600;
 }
 
-/* DATAFRAMES avec correction débordement et fond blanc */
+/* DATAFRAMES */
 .stDataFrame {
     border-radius: var(--radius-lg);
     overflow: hidden !important;
@@ -359,41 +437,7 @@ html {
     background: var(--primary-50) !important;
 }
 
-/* Force DataFrames à respecter container */
-div[data-testid="stDataFrame"] {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow: hidden !important;
-}
-
-div[data-testid="stDataFrame"] > div {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow-x: auto !important;
-}
-
-/* Scrollbar DataFrames avec accent doré */
-.stDataFrame::-webkit-scrollbar {
-    height: 8px;
-    width: 8px;
-}
-
-.stDataFrame::-webkit-scrollbar-track {
-    background: var(--slate-100);
-    border-radius: 4px;
-}
-
-.stDataFrame::-webkit-scrollbar-thumb {
-    background: var(--primary-600);
-    border-radius: 4px;
-    transition: var(--transition);
-}
-
-.stDataFrame::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-700);
-}
-
-/* Messages de statut avec meilleur contraste */
+/* Messages de statut */
 .stSuccess {
     background: var(--emerald-100);
     border: 2px solid var(--emerald-500);
@@ -434,7 +478,7 @@ div[data-testid="stDataFrame"] > div {
     font-family: 'Inter', sans-serif;
 }
 
-/* Employee cards avec fond blanc */
+/* Employee cards */
 .employee-card {
     background: rgba(255, 255, 255, 0.98);
     border-radius: var(--radius-lg);
@@ -453,7 +497,7 @@ div[data-testid="stDataFrame"] > div {
     border-color: var(--primary-600);
 }
 
-/* Avatar avec couleurs Sofitel */
+/* Avatar */
 .avatar {
     width: 60px;
     height: 60px;
@@ -476,7 +520,7 @@ div[data-testid="stDataFrame"] > div {
     box-shadow: var(--shadow-xl);
 }
 
-/* Status badges avec meilleur contraste */
+/* Status badges */
 .status-badge {
     padding: 0.25rem 0.75rem;
     border-radius: 9999px;
@@ -488,23 +532,7 @@ div[data-testid="stDataFrame"] > div {
     transition: var(--transition);
 }
 
-.status-valide {
-    background: var(--emerald-500);
-    color: white;
-    border: 2px solid var(--emerald-500);
-}
-
-.status-absent {
-    background: var(--red-500);
-    color: white;
-    border: 2px solid var(--red-500);
-}
-
-.status-badge:hover {
-    transform: scale(1.05);
-}
-
-/* Métriques avec fond blanc */
+/* Métriques */
 [data-testid="metric-container"] {
     background: rgba(255, 255, 255, 0.98) !important;
     border-radius: var(--radius-lg);
@@ -534,7 +562,7 @@ div[data-testid="stDataFrame"] > div {
     letter-spacing: 0.05em;
 }
 
-/* Expanders avec fond blanc */
+/* Expanders */
 .stExpander {
     border: 2px solid var(--slate-200);
     border-radius: var(--radius-lg);
@@ -578,9 +606,6 @@ div[data-testid="stDataFrame"] > div {
     transition: var(--transition);
     box-shadow: var(--shadow-lg);
     font-family: 'Inter', sans-serif;
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
 }
 
 .stDownloadButton > button:hover {
@@ -590,23 +615,15 @@ div[data-testid="stDataFrame"] > div {
 }
 
 /* Responsive Design */
-@media (max-width: 1200px) {
-    .css-1d391kg {
-        width: 250px !important;
-        min-width: 250px;
-    }
-    
-    .main .block-container {
-        padding-left: var(--space-3);
-        padding-right: var(--space-3);
-    }
-    
-    .modern-card, .section-header {
-        padding: var(--space-4);
-    }
-}
-
 @media (max-width: 768px) {
+    .css-1d391kg,
+    section[data-testid="stSidebar"] > div {
+        width: 100% !important;
+        min-width: 100% !important;
+        position: relative !important;
+        height: auto !important;
+    }
+    
     .main .block-container {
         padding: var(--space-4) var(--space-2);
     }
@@ -625,27 +642,19 @@ div[data-testid="stDataFrame"] > div {
         font-size: var(--text-lg);
     }
     
-    .css-ocqkz7 {
-        flex-direction: column !important;
+    /* Boutons sidebar mobile */
+    section[data-testid="stSidebar"] .stButton > button {
+        padding: 0.5rem 0.75rem !important;
+        font-size: var(--text-xs) !important;
     }
     
-    .css-ocqkz7 > div {
-        width: 100% !important;
-        margin-bottom: var(--space-3);
-    }
-    
-    .css-1d391kg {
-        width: 100% !important;
-        min-width: 100% !important;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        padding: var(--space-2) var(--space-4);
-        font-size: var(--text-xs);
-    }
-    
-    .stDataFrame {
-        font-size: var(--text-xs);
+    /* Bouton sidebar mobile plus gros */
+    button[kind="header"],
+    button[aria-label*="sidebar"] {
+        width: 3.5rem !important;
+        height: 3.5rem !important;
+        top: 0.5rem !important;
+        left: 0.5rem !important;
     }
     
     .stDataFrame table {
@@ -654,7 +663,7 @@ div[data-testid="stDataFrame"] > div {
     
     .stDataFrame thead th,
     .stDataFrame tbody td {
-        padding: var(--space-1) var(--space-2);
+        padding: 0.5rem 0.25rem;
         max-width: 120px;
         font-size: 0.7rem;
     }
@@ -669,16 +678,26 @@ div[data-testid="stDataFrame"] > div {
         padding: var(--space-2);
     }
     
-    .stButton > button {
-        padding: var(--space-2) var(--space-4);
-        font-size: var(--text-xs);
-    }
-    
     .avatar {
         width: 40px;
         height: 40px;
         font-size: var(--text-base);
         margin-right: var(--space-2);
+    }
+    
+    section[data-testid="stSidebar"] .stButton > button {
+        padding: 0.5rem !important;
+        font-size: 0.7rem !important;
+        text-align: center !important;
+    }
+    
+    /* Bouton sidebar très petit écran */
+    button[kind="header"],
+    button[aria-label*="sidebar"] {
+        width: 4rem !important;
+        height: 4rem !important;
+        top: 0.5rem !important;
+        left: 0.5rem !important;
     }
     
     .stDataFrame thead th,
@@ -692,102 +711,24 @@ div[data-testid="stDataFrame"] > div {
 
 /* Animations */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
-.stApp > div {
-    animation: fadeIn 0.6s ease-out;
-}
+.stApp > div { animation: fadeIn 0.6s ease-out; }
+.css-1d391kg, section[data-testid="stSidebar"] { animation: slideInLeft 0.5s ease-out; }
+.modern-card { animation: fadeIn 0.4s ease-out; }
 
-.css-1d391kg {
-    animation: slideInLeft 0.5s ease-out;
-}
-
-.modern-card {
-    animation: fadeIn 0.4s ease-out;
-}
-
-/* Scrollbar avec accent doré */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--slate-100);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--primary-600);
-    border-radius: 4px;
-    transition: var(--transition);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-700);
-}
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--slate-100); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: var(--primary-600); border-radius: 4px; transition: var(--transition); }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-700); }
 
 /* Firefox */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary-600) var(--slate-100);
-}
-
-/* Utility classes */
-.flex { display: flex; }
-.flex-wrap { flex-wrap: wrap; }
-.items-center { align-items: center; }
-.justify-between { justify-content: space-between; }
-.gap-2 { gap: var(--space-2); }
-.gap-4 { gap: var(--space-4); }
-.w-full { width: 100%; }
-.text-center { text-align: center; }
-.font-semibold { font-weight: 600; }
-.font-bold { font-weight: 700; }
-
-.grid-auto {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: var(--space-4);
-}
-
-@media (max-width: 768px) {
-    .grid-auto {
-        grid-template-columns: 1fr;
-        gap: var(--space-2);
-    }
-}
-
-@media print {
-    .stApp {
-        background: white !important;
-    }
-    
-    .modern-card, .employee-card, .section-header {
-        box-shadow: none !important;
-        border: 1px solid var(--slate-300) !important;
-    }
-    
-    .stButton, .css-1d391kg {
-        display: none !important;
-    }
-}
+* { scrollbar-width: thin; scrollbar-color: var(--primary-600) var(--slate-100); }

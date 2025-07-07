@@ -13,9 +13,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# CSS moderne style américain
-# CSS Sofitel optimisé pour la lisibilité - Remplacez votre section CSS par ceci :
-
+# CSS moderne
 with open('styles/style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
@@ -42,7 +40,8 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
-# Sidebar moderne
+
+# SIDEBAR AVEC NAVIGATION PAR BOUTONS (Plus fiable que radio)
 st.sidebar.markdown("""
 <div style="text-align: center; padding: 1.5rem 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 1.5rem;">
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
@@ -53,18 +52,56 @@ st.sidebar.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Menu principal
-menu = st.sidebar.selectbox("Navigation", [
-    "🏠 Accueil / Tableau de bord",
-    "👤 Gérer les employés", 
-    "📚 Gérer les formations",
-    "🧑‍🏫 Gérer les formateurs",
-    "🗓️ Planifier une session",
-    "✅ Suivi des participations"
-])
+# Initialisation de session_state
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = "dashboard"
+
+# Navigation avec boutons personnalisés
+st.sidebar.markdown("### 📋 Menu Principal")
+
+# Boutons de navigation
+if st.sidebar.button("🏠 Accueil / Tableau de bord", use_container_width=True, 
+                     type="primary" if st.session_state.current_page == "dashboard" else "secondary"):
+    st.session_state.current_page = "dashboard"
+
+if st.sidebar.button("👤 Gérer les employés", use_container_width=True,
+                     type="primary" if st.session_state.current_page == "employes" else "secondary"):
+    st.session_state.current_page = "employes"
+
+if st.sidebar.button("📚 Gérer les formations", use_container_width=True,
+                     type="primary" if st.session_state.current_page == "formations" else "secondary"):
+    st.session_state.current_page = "formations"
+
+if st.sidebar.button("🧑‍🏫 Gérer les formateurs", use_container_width=True,
+                     type="primary" if st.session_state.current_page == "formateurs" else "secondary"):
+    st.session_state.current_page = "formateurs"
+
+if st.sidebar.button("🗓️ Planifier une session", use_container_width=True,
+                     type="primary" if st.session_state.current_page == "sessions" else "secondary"):
+    st.session_state.current_page = "sessions"
+
+if st.sidebar.button("✅ Suivi des participations", use_container_width=True,
+                     type="primary" if st.session_state.current_page == "participations" else "secondary"):
+    st.session_state.current_page = "participations"
+
+# Variable pour le routage
+current_page = st.session_state.current_page
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # DASHBOARD
-if menu == "🏠 Accueil / Tableau de bord":
+if current_page == "dashboard":
     from helpers import (
         recuperer_formations, recuperer_formateurs, recuperer_employes,
         recuperer_sessions, recuperer_suivis
@@ -250,8 +287,24 @@ if menu == "🏠 Accueil / Tableau de bord":
             </div>
             """, unsafe_allow_html=True)
 
-# SECTION EMPLOYÉS (Corrección)
-elif menu == "👤 Gérer les employés":
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# SECTION EMPLOYÉS
+elif current_page == "employes":
     from helpers import (
         ajouter_employe, recuperer_employes, supprimer_employe,
         modifier_employe, get_fiche_employe, exporter_employes_excel
@@ -416,7 +469,7 @@ elif menu == "👤 Gérer les employés":
         else:
             st.info("📭 Aucun employé enregistré")
         
-        # Section de modification/suppression avec corrections
+        # Section de modification/suppression
         st.subheader("🔧 Modifier ou supprimer un employé ciblé")
         
         search_modif = st.text_input("🔍 Rechercher un employé pour modifier ou supprimer (nom ou prénom)", key="search_modif").lower()
@@ -444,7 +497,6 @@ elif menu == "👤 Gérer les employés":
                             st.rerun()
                         
                         with col2:
-                            # Formulaire de modification SANS key sur form_submit_button
                             with st.form(f"form_modif_emp_{row['ID']}"):
                                 st.write("**✏️ Modifier l'employé:**")
                                 new_nom = st.text_input("Nom", row['Nom'], key=f"nom_{row['ID']}")
@@ -453,7 +505,6 @@ elif menu == "👤 Gérer les employés":
                                 new_departement = st.text_input("Département", row['Département'], key=f"dept_{row['ID']}")
                                 new_type = st.selectbox("Contrat", ["CDI", "CDD"], index=["CDI", "CDD"].index(row['Contrat']), key=f"type_{row['ID']}")
                                 
-                                # CORRECTION: Pas de key sur form_submit_button
                                 if st.form_submit_button("💾 Sauvegarder"):
                                     modifier_employe(row['ID'], new_nom, new_prenom, new_fonction, new_departement, new_type)
                                     st.success("Employé mis à jour. Rechargez la page.")
@@ -463,8 +514,28 @@ elif menu == "👤 Gérer les employés":
         else:
             st.caption("🔕 Entrez un nom ou prénom ci-dessus pour activer la modification ciblée.")
 
-# SECTION FORMATIONS (Corrección)
-elif menu == "📚 Gérer les formations":
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# SECTION FORMATIONS
+elif current_page == "formations":
     from helpers import (
         ajouter_formation, recuperer_formations, supprimer_formation,
         modifier_formation, exporter_formations_excel
@@ -596,7 +667,6 @@ elif menu == "📚 Gérer les formations":
                                     st.rerun()
                             
                             with col2:
-                                # CORRECTION: Formulaire sans key sur form_submit_button
                                 with st.form(f"form_modif_f_{row['ID']}"):
                                     st.write("**✏️ Modifier la formation:**")
                                     new_titre = st.text_input("Titre", row['Titre'], key=f"titre_{row['ID']}")
@@ -604,7 +674,6 @@ elif menu == "📚 Gérer les formations":
                                     new_unite = st.selectbox("Unité", ["heures", "jour(s)"],
                                                             index=["heures", "jour(s)"].index(row['Unité']), key=f"unite_{row['ID']}")
                                     
-                                    # CORRECTION: Pas de key sur form_submit_button
                                     if st.form_submit_button("💾 Sauvegarder"):
                                         modifier_formation(row['ID'], new_titre, new_duree, new_unite)
                                         st.success("✅ Formation modifiée!")
@@ -614,8 +683,23 @@ elif menu == "📚 Gérer les formations":
         else:
             st.info("📭 Aucune formation disponible")
 
-# SECTION FORMATEURS (Corrección)
-elif menu == "🧑‍🏫 Gérer les formateurs":
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# SECTION FORMATEURS
+elif current_page == "formateurs":
     from helpers import (
         ajouter_formateur, recuperer_formateurs, supprimer_formateur,
         modifier_formateur, exporter_formateurs_excel
@@ -760,7 +844,6 @@ elif menu == "🧑‍🏫 Gérer les formateurs":
                                     st.rerun()
                             
                             with col2:
-                                # CORRECTION: Formulaire sans key sur form_submit_button
                                 with st.form(f"form_modif_fmt_{row['ID']}"):
                                     st.write("**✏️ Modifier le formateur:**")
                                     new_nom = st.text_input("Nom", row['Nom'], key=f"nom_fmt_{row['ID']}")
@@ -769,7 +852,6 @@ elif menu == "🧑‍🏫 Gérer les formateurs":
                                     new_telephone = st.text_input("Téléphone", row['Téléphone'], key=f"tel_{row['ID']}")
                                     new_adresse = st.text_area("Adresse", row['Adresse'], key=f"adr_{row['ID']}")
                                     
-                                    # CORRECTION: Pas de key sur form_submit_button
                                     if st.form_submit_button("💾 Sauvegarder"):
                                         modifier_formateur(row['ID'], new_nom, new_responsable, new_email, new_telephone, new_adresse)
                                         st.success("✅ Formateur modifié!")
@@ -779,8 +861,19 @@ elif menu == "🧑‍🏫 Gérer les formateurs":
         else:
             st.info("📭 Aucun formateur disponible")
 
+
+
+
+
+
+
+
+
+
+
+
 # SECTION SESSIONS
-elif menu == "🗓️ Planifier une session":
+elif current_page == "sessions":
     from helpers import (
         ajouter_session, recuperer_sessions, supprimer_session,
         recuperer_formations, recuperer_formateurs
@@ -879,7 +972,7 @@ elif menu == "🗓️ Planifier une session":
             st.info("📅 Aucune session planifiée pour le moment")
 
 # SECTION PARTICIPATIONS
-elif menu == "✅ Suivi des participations":
+elif current_page == "participations":
     from helpers import (
         ajouter_suivi, recuperer_suivis, supprimer_suivi,
         recuperer_employes, recuperer_sessions, recuperer_suivis_groupes_par_session,
